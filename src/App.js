@@ -1,36 +1,55 @@
 // import logo from './logo.svg';
 // import './App.css';
 
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
 import React from "react";
-import { Feedback } from "./components/Feedback/Feedback";
+import FeedbackOptions from "./components/FeedbackOptions/FeedbackOptions";
 
-function App() {
-  return (
-    <>
-      <Feedback />
-    </>
-  );
+class App extends React.Component {
+  state = {
+    good: 0,
+    neutral: 0,
+    bad: 0,
+  };
+
+  handleClick = (option) => () => {
+    this.setState((prevState) => ({ [option]: prevState[option] + 1 }));
+  };
+
+  countTotalFeedback = () => {
+    return this.state.good + this.state.neutral + this.state.bad;
+  };
+
+  countPositiveFeedbackPercentage = () => {
+    return (
+      (this.state.good * 100) /
+      (this.state.good + this.state.neutral + this.state.bad)
+    );
+  };
+
+  render() {
+    const option = Object.keys(this.state);
+
+    return (
+      <div>
+        <p>Please leave feedback</p>
+
+        <FeedbackOptions options={option} onLeaveFeedback={this.handleClick} />
+
+        <p>Statistics</p>
+
+        <div>
+          <span>Good: {this.state.good}</span> <br />
+          <span>Neutral: {this.state.neutral}</span> <br />
+          <span>Bad: {this.state.bad}</span> <br />
+          <span>Total: {this.countTotalFeedback()}</span> <br />
+          <span>
+            Positive feedback:{" "}
+            {Math.trunc(this.countPositiveFeedbackPercentage())} %
+          </span>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
