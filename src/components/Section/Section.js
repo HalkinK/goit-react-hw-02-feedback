@@ -2,7 +2,7 @@ import React from "react";
 
 const Section = ({ title, children }) => (
   <div>
-    <p>{title}</p>
+    <h3>{title}</h3>
     {children}
   </div>
 );
